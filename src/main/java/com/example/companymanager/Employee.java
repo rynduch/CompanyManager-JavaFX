@@ -46,11 +46,33 @@ public class Employee implements Comparable<Employee> {
   public double getSalary(){
     return this.salary;
   }
-  public void set_salary(double s){
+  public void setSalary(double s){
     this.salary = s;
   }
   public String getFullName(){
     String full_name = name + " " + lastname;
     return full_name;
+  }
+  public String getLastname(){
+    return this.lastname;
+  }
+  public void setName(String n){
+    this.name = n;
+  }
+  public void setLastname(String l){
+    this.lastname = l;
+  }
+  public void setDayDob(int d){
+    this.dob.withDayOfMonth(d);
+  }
+  public void setMonthDob(int m){
+    this.dob.withMonth(m);
+  }
+  public void setYearDob(int y){
+    this.dob.withYear(y);
+  }
+
+  public void setCondition(EmployeeCondition ec){
+    this.condition = ec;
   }
 }

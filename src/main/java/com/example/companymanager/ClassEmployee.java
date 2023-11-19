@@ -1,5 +1,8 @@
 package com.example.companymanager;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.*;
 
 public class ClassEmployee{
@@ -33,11 +36,11 @@ public class ClassEmployee{
   public void addSalary(Employee e_employee, double e_raise) {
     for (Employee e : employee_list) {
       if (e.compare_full_name(e_employee) == 0) {
-        e.set_salary(e.getSalary()+e_raise);
+        e.setSalary(e.getSalary()+e_raise);
         return;
       }
     }
-    System.out.println("Nie znaleziono pracownika w " + this.employee_group_name + ".");
+    //System.out.println("Nie znaleziono pracownika w " + this.employee_group_name + ".");
   }
   public void removeEmployee(Employee e_employee){
     Iterator<Employee> iterator = employee_list.iterator();
@@ -58,32 +61,63 @@ public class ClassEmployee{
         return;
       }
     }
-    System.out.println("Nie znaleziono pracownika w " + this.employee_group_name + ".");
   }
-  public List<Employee> search(String e_lastname) {
-    List<Employee> found = new ArrayList<>();
-    Comparator<Employee> comparator = Comparator.comparing(e -> e.lastname);
+  public void changeName(Employee e_employee, String n) {
     for (Employee e : employee_list) {
-      if (comparator.compare(e, new Employee("", e_lastname, 0, null, null)) == 0) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setName(n);
+        return;
+      }
+    }
+  }
+  public void changeLastname(Employee e_employee, String l) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setLastname(l);
+        return;
+      }
+    }
+  }
+  public void changeSalary(Employee e_employee, double s) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setSalary(s);
+        return;
+      }
+    }
+  }
+  public void changeDayDob(Employee e_employee, int d) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setDayDob(d);
+        return;
+      }
+    }
+  }
+  public void changeMonthDob(Employee e_employee, int m) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setMonthDob(m);
+        return;
+      }
+    }
+  }
+  public void changeYearDob(Employee e_employee, int y) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setYearDob(y);
+        return;
+      }
+    }
+  }
+  public ObservableList<Employee> searchPartial(String part_of_name) {
+    ObservableList<Employee> found = FXCollections.observableArrayList();
+    String lc_part_of_name = part_of_name.toLowerCase();
+    for (Employee e : employee_list) {
+      if(e.name.toLowerCase().contains(lc_part_of_name) || e.lastname.toLowerCase().contains(lc_part_of_name))  {
         found.add(e);
       }
     }
-    if (found.isEmpty()) {
-      System.out.println("Nie znaleziono pracownika w " + this.employee_group_name + " o nazwisku " + e_lastname + ".");
-    }
-    return found;
-  }
-  public List<Employee> searchPartial(String part_of_name) {
-    List<Employee> found = new ArrayList<>();
-    int i = 0;
-    for (Employee e : employee_list) {
-      if (e.name.contains(part_of_name) || e.lastname.contains(part_of_name)) {
-        found.add(e);
-        i = 1;
-      }
-    }
-    if (i == 0)
-      System.out.println("Nie znaleziono pracownika w " + this.employee_group_name + " zawierajacego " + part_of_name + ".");
     return found;
   }
   public int countByCondition(EmployeeCondition condition) {
@@ -102,9 +136,14 @@ public class ClassEmployee{
       System.out.print("\n");
     }
   }
-  public List<Employee> sortByName() {
-    List<Employee> sorted = new ArrayList<>(employee_list);
-    sorted.sort(Comparator.comparing(e -> e.name));
+  public ObservableList<Employee> sortByName() {
+    ObservableList<Employee> sorted = FXCollections.observableArrayList();
+    ArrayList<Employee> pom = new ArrayList<>();
+    pom = employee_list;
+    pom.sort(Comparator.comparing(Employee::getLastname));
+    for (Employee e : pom){
+      sorted.add(e);
+    }
     return sorted;
   }
   public List<Employee> sortBySalary() {
@@ -116,6 +155,13 @@ public class ClassEmployee{
     return Collections.max(employee_list, Comparator.comparing(Employee::getSalary));
   }
   public double getPercentage(){
-    return (double)employee_list.size() / max_employees * 100;
+    return (double)employee_list.size() / (double) max_employees * 100;
+  }
+  public ObservableList<Employee> getObsEmpoyeeList() {
+    ObservableList<Employee> obs_list = FXCollections.observableArrayList();
+    for (Employee e : employee_list){
+      obs_list.add(e);
+    }
+    return obs_list;
   }
 }

@@ -1,9 +1,9 @@
 package com.example.companymanager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.*;
 
 public class ClassContainer {
   public Map<String, ClassEmployee> work_groups;
@@ -22,14 +22,14 @@ public class ClassContainer {
   public void removeClass(String name) {
     this.work_groups.remove(name);
   }
-  public List<String> findEmpty() {
-    List<String> found = new ArrayList<>();
-    for (Map.Entry<String, ClassEmployee> entry : this.work_groups.entrySet()) {
-      if (entry.getValue().employee_list.isEmpty()) {
-        found.add(entry.getKey());
+  public ObservableList<ClassEmployee> findEmpty() {
+    ObservableList<ClassEmployee> list = FXCollections.observableArrayList();
+    for (Map.Entry<String, ClassEmployee> group : this.work_groups.entrySet()) {
+      if (group.getValue().getPercentage() == 0.0) {
+        list.add(group.getValue());
       }
     }
-    return found;
+    return list;
   }
   public void summary() {
     for (Map.Entry<String, ClassEmployee> e : this.work_groups.entrySet()) {
@@ -37,6 +37,21 @@ public class ClassContainer {
       System.out.println("Nazwa grupy: " + e.getKey());
       System.out.println("Procentowe zapełnienie: " + percentage + "%");
     }
+  }
+  public ObservableList<ClassEmployee> sortByPercentage() {
+    ObservableList<ClassEmployee> sorted = FXCollections.observableArrayList();
+    for (Map.Entry<String, ClassEmployee> group : this.work_groups.entrySet()){
+      sorted.add(group.getValue());
+    }
+    sorted.sort(Comparator.comparing(ClassEmployee::getPercentage).reversed());
+    return sorted;
+  }
+  public ObservableList<ClassEmployee> getObsClassEmployeeList() {
+    ObservableList<ClassEmployee> obs_list = FXCollections.observableArrayList();
+    for (Map.Entry<String, ClassEmployee> group : this.work_groups.entrySet()) {
+      obs_list.add(group.getValue());
+    }
+    return obs_list;
   }
 //  public double getPercentage(String key){
 //    double percentage = ((double) work_groups.get(key).employee_list.size() / work_groups.get(key).max_employees) * 100;
