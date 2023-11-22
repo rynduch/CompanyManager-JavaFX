@@ -31,15 +31,13 @@ public class GroupButtonsFunctions {
     group_name_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     max_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
 
-    Label head_label = new Label();
-    Label l_group_name = new Label();
-    Label l_max_number = new Label();
-
-    head_label.setFont(Font.font("Berlin Sans FB Demi", 20));
+    Label head_label = new Label("Add Group");
     head_label.setAlignment(Pos.CENTER);
-    head_label.setText("Add Group");
-    l_group_name.setText("Name: ");
-    l_max_number.setText("Max employees: ");
+    head_label.setFont(Font.font("Berlin Sans FB Demi", 20));
+    Label l_group_name = new Label("Name: ");
+    Label l_max_number = new Label("Max: ");
+    Label invalid_data = new Label();
+    invalid_data.setVisible(false);
 
     l_group_name.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
     l_max_number.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
@@ -47,20 +45,31 @@ public class GroupButtonsFunctions {
     Button ok_button = new Button("OK");
     ok_button.setOnAction(e -> {
       String g_name = group_name_textfield.getText();
-      int max = Integer.parseInt(max_textfield.getText());
-    ClassEmployee clas_employee = new ClassEmployee(g_name, max);
-    container.addClass(clas_employee);
-    window.close();}
-  );
+      String s_max = max_textfield.getText();
+      if (g_name.trim().isEmpty() || s_max.trim().isEmpty()) {
+        invalid_data.setVisible(true);
+        invalid_data.setText("Please provide all required data.");
+      } else {
+        try {
+          int i_max = Integer.parseInt(s_max);
+          ClassEmployee clas_employee = new ClassEmployee(g_name,i_max);
+          container.addClass(clas_employee);
+          window.close();
+        } catch (NumberFormatException ex) {
+          invalid_data.setVisible(true);
+          invalid_data.setText("Max must be a valid number.");
+        }
+      }
+    });
 
     HBox group_name_layout = new HBox();
     HBox max_layout = new HBox();
     group_name_layout.getChildren().addAll(l_group_name, group_name_textfield);
     max_layout.getChildren().addAll(l_max_number, max_textfield);
 
-    VBox center_layout = new VBox(); // 10 - odleglosci miedzy children
+    VBox center_layout = new VBox();
     center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, group_name_layout,max_layout, ok_button );
+    center_layout.getChildren().addAll(head_label, group_name_layout,max_layout, invalid_data, ok_button );
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 

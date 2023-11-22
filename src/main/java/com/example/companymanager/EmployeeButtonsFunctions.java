@@ -17,45 +17,35 @@ public class EmployeeButtonsFunctions {
     window.setMinHeight(300);
     window.setMinWidth(350);
 
-    //TEXTFIELD
     TextField name_textfield = new TextField();
     TextField lastname_textfield = new TextField();
-    TextField day_dob_textfield = new TextField();
-    TextField month_dob_textfield = new TextField();
-    TextField year_dob_textfield = new TextField();
+    DatePicker dob_datepicker = new DatePicker();
     TextField salary_textfield = new TextField();
+    ChoiceBox<EmployeeCondition> condition_choicebox = new ChoiceBox<>();
+
     name_textfield.setPromptText("Name");
     lastname_textfield.setPromptText("Lastname");
-    day_dob_textfield.setPromptText("Day");
-    month_dob_textfield.setPromptText("Month");
-    year_dob_textfield.setPromptText("Year");
     salary_textfield.setPromptText("Salary");
+
     name_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     lastname_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
-    day_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
-    month_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
-    year_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
+    dob_datepicker.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     salary_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
-    ChoiceBox<EmployeeCondition> condition_choicebox = new ChoiceBox<>();
     condition_choicebox.getItems().setAll(EmployeeCondition.values());
     condition_choicebox.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
 
     // LABELS
-    Label head_label = new Label();
-    head_label.setAlignment(Pos.CENTER);
-    Label l_name = new Label();
-    Label l_lastname = new Label();
-    Label l_dob = new Label();
-    Label l_salary = new Label();
-    Label l_condition = new Label();
-
-    head_label.setText("Add Employee");
+    Label head_label = new Label("Add Employee");
     head_label.setFont(Font.font("Berlin Sans FB Demi", 20));
-    l_name.setText("Name: ");
-    l_lastname.setText("Lastname: ");
-    l_dob.setText("Date of birth: ");
-    l_salary.setText("Salary: ");
-    l_condition.setText("Condition: ");
+    head_label.setAlignment(Pos.CENTER);
+    Label l_name = new Label("Name: ");
+    Label l_lastname = new Label("Lastname: ");
+    Label l_dob = new Label("Date of birth: ");
+    Label l_salary = new Label("Salary: ");
+    Label l_condition = new Label("Condition: ");
+    Label invalid_data = new Label();
+    invalid_data.setVisible(false);
+
     l_name.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
     l_lastname.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
     l_dob.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
@@ -67,15 +57,24 @@ public class EmployeeButtonsFunctions {
     ok_button.setOnAction(e -> {
       String s_name = name_textfield.getText();
       String s_lastname = lastname_textfield.getText();
-      int day = Integer.parseInt(day_dob_textfield.getText());
-      int month = Integer.parseInt(month_dob_textfield.getText());
-      int year = Integer.parseInt(year_dob_textfield.getText());
-      LocalDate ld_dob = LocalDate.of(year, month, day);
-      double d_salary = Double.parseDouble(salary_textfield.getText());
+      LocalDate ld_dob = dob_datepicker.getValue();
+      String s_salary = salary_textfield.getText();
       EmployeeCondition ec_condition = condition_choicebox.getValue();
-      Employee employee = new Employee(s_name,s_lastname, d_salary, ld_dob, ec_condition);
-      all.addEmployee(employee);
-      window.close();}
+              if (s_name.trim().isEmpty() || s_lastname.trim().isEmpty() || ld_dob == null || s_salary.isEmpty() || ec_condition == null) {
+                invalid_data.setVisible(true);
+                invalid_data.setText("Please provide all required data.");
+              } else {
+                try {
+                  double d_salary = Double.parseDouble(s_salary);
+                  Employee employee = new Employee(s_name, s_lastname, d_salary, ld_dob, ec_condition);
+                  all.addEmployee(employee);
+                  window.close();
+                } catch (NumberFormatException ex) {
+                  invalid_data.setVisible(true);
+                  invalid_data.setText("Salary must be a valid number.");
+                }
+              }
+            }
     );
 
     HBox name_layout = new HBox();
@@ -85,14 +84,14 @@ public class EmployeeButtonsFunctions {
     HBox condition_layout = new HBox();
     name_layout.getChildren().addAll(l_name, name_textfield);
     lastname_layout.getChildren().addAll(l_lastname, lastname_textfield);
-    dob_layout.getChildren().addAll(l_dob,day_dob_textfield, month_dob_textfield,year_dob_textfield);
+    dob_layout.getChildren().addAll(l_dob, dob_datepicker);
     salary_layout.getChildren().addAll(l_salary, salary_textfield);
     condition_layout.getChildren().addAll(l_condition, condition_choicebox);
     dob_layout.setSpacing(5);
 
-    VBox center_layout = new VBox(); // 10 - odleglosci miedzy children
+    VBox center_layout = new VBox();
     center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, name_layout,lastname_layout, dob_layout, salary_layout, condition_layout, ok_button);
+    center_layout.getChildren().addAll(head_label, name_layout,lastname_layout, dob_layout, salary_layout, condition_layout, invalid_data, ok_button);
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 
@@ -122,42 +121,31 @@ public class EmployeeButtonsFunctions {
     //TEXTFIELD
     TextField name_textfield = new TextField();
     TextField lastname_textfield = new TextField();
-    TextField day_dob_textfield = new TextField();
-    TextField month_dob_textfield = new TextField();
-    TextField year_dob_textfield = new TextField();
+    DatePicker dob_datepicker = new DatePicker();
     TextField salary_textfield = new TextField();
     name_textfield.setPromptText(employee.name);
     lastname_textfield.setPromptText(employee.lastname);
-    day_dob_textfield.setPromptText(String.valueOf(employee.dob.getDayOfMonth()));
-    month_dob_textfield.setPromptText(String.valueOf(employee.dob.getMonth()));
-    year_dob_textfield.setPromptText(String.valueOf(employee.dob.getYear()));
     salary_textfield.setPromptText(String.valueOf(employee.getSalary()));
     name_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     lastname_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
-    day_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
-    month_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
-    year_dob_textfield.prefWidthProperty().bind(name_textfield.widthProperty().multiply(0.33));
+    dob_datepicker.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     salary_textfield.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
     ChoiceBox<EmployeeCondition> condition_choicebox = new ChoiceBox<>();
     condition_choicebox.getItems().setAll(EmployeeCondition.values());
     condition_choicebox.prefWidthProperty().bind(window.widthProperty().multiply(0.59));
 
     // LABELS
-    Label head_label = new Label();
-    head_label.setAlignment(Pos.CENTER);
-    Label l_name = new Label();
-    Label l_lastname = new Label();
-    Label l_dob = new Label();
-    Label l_salary = new Label();
-    Label l_condition = new Label();
-
-    head_label.setText("Change Employee");
+    Label head_label = new Label("Change Employee");
     head_label.setFont(Font.font("Berlin Sans FB Demi", 20));
-    l_name.setText("Name: ");
-    l_lastname.setText("Lastname: ");
-    l_dob.setText("Date of birth: ");
-    l_salary.setText("Salary: ");
-    l_condition.setText("Condition: ");
+    head_label.setAlignment(Pos.CENTER);
+    Label l_name = new Label("Name: ");
+    Label l_lastname = new Label("Lastname: ");
+    Label l_dob = new Label("Date of birth: ");
+    Label l_salary = new Label("Salary: ");
+    Label l_condition = new Label("Condition: ");
+    Label invalid_data = new Label();
+    invalid_data.setVisible(false);
+
     l_name.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
     l_lastname.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
     l_dob.prefWidthProperty().bind(window.widthProperty().multiply(0.4));
@@ -167,18 +155,22 @@ public class EmployeeButtonsFunctions {
     // BUTTON
     Button ok_button = new Button("OK");
     ok_button.setOnAction(e -> {
-      //all.work_groups.get("All").employee_list.remove(employee);
       if(name_textfield != null && !name_textfield.getText().isEmpty()) all.work_groups.get("All").changeName(employee, name_textfield.getText());
       if(lastname_textfield != null && !lastname_textfield.getText().isEmpty()) all.work_groups.get("All").changeLastname(employee, lastname_textfield.getText());
-      if(day_dob_textfield != null && !day_dob_textfield.getText().isEmpty()) all.work_groups.get("All").changeDayDob(employee, Integer.parseInt(day_dob_textfield.getText()));
-      if(month_dob_textfield != null && !month_dob_textfield.getText().isEmpty()) all.work_groups.get("All").changeMonthDob(employee, Integer.parseInt(month_dob_textfield.getText()));
-      if(year_dob_textfield != null && !year_dob_textfield.getText().isEmpty()) all.work_groups.get("All").changeYearDob(employee, Integer.parseInt(year_dob_textfield.getText()));
-      if(salary_textfield != null && !salary_textfield.getText().isEmpty()) all.work_groups.get("All").changeSalary(employee, Double.parseDouble(salary_textfield.getText()));
+      if(dob_datepicker != null && dob_datepicker.getValue() != null)  all.work_groups.get("All").changeDob(employee, dob_datepicker.getValue());
+      if(salary_textfield != null && !salary_textfield.getText().isEmpty()) {
+        double d_salary;
+        try {
+          d_salary = Double.parseDouble(salary_textfield.getText());
+          all.work_groups.get("All").changeSalary(employee, d_salary);
+          window.close();
+        } catch (NumberFormatException ex) {
+          invalid_data.setVisible(true);
+          invalid_data.setText("Salary must be a valid number.");
+        }
+      }
       if(condition_choicebox.getValue() != null) all.work_groups.get("All").changeCondition(employee, condition_choicebox.getValue() );
-
-      //all.work_groups.get("All").employee_list.add(employee);
-      window.close();}
-    );
+    });
 
     HBox name_layout = new HBox();
     HBox lastname_layout = new HBox();
@@ -187,14 +179,14 @@ public class EmployeeButtonsFunctions {
     HBox condition_layout = new HBox();
     name_layout.getChildren().addAll(l_name, name_textfield);
     lastname_layout.getChildren().addAll(l_lastname, lastname_textfield);
-    dob_layout.getChildren().addAll(l_dob,day_dob_textfield, month_dob_textfield,year_dob_textfield);
+    dob_layout.getChildren().addAll(l_dob, dob_datepicker);
     salary_layout.getChildren().addAll(l_salary, salary_textfield);
     condition_layout.getChildren().addAll(l_condition, condition_choicebox);
     dob_layout.setSpacing(5);
 
     VBox center_layout = new VBox(); // 10 - odleglosci miedzy children
     center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, name_layout,lastname_layout, dob_layout, salary_layout, condition_layout, ok_button);
+    center_layout.getChildren().addAll(head_label, name_layout, lastname_layout, dob_layout, salary_layout, condition_layout,invalid_data, ok_button);
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 

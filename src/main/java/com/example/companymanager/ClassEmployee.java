@@ -3,6 +3,7 @@ package com.example.companymanager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ClassEmployee{
@@ -90,6 +91,14 @@ public class ClassEmployee{
     for (Employee e : employee_list) {
       if (e.compare_full_name(e_employee) == 0) {
         e.setDayDob(d);
+        return;
+      }
+    }
+  }
+  public void changeDob(Employee e_employee, LocalDate d) {
+    for (Employee e : employee_list) {
+      if (e.compare_full_name(e_employee) == 0) {
+        e.setDob(d);
         return;
       }
     }

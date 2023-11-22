@@ -71,7 +71,9 @@ public class Employee implements Comparable<Employee> {
   public void setYearDob(int y){
     this.dob.withYear(y);
   }
-
+  public void setDob(LocalDate d){
+    this.dob = d;
+  }
   public void setCondition(EmployeeCondition ec){
     this.condition = ec;
   }
