@@ -1,20 +1,19 @@
 package com.example.companymanager;
 
-import javafx.application.Application; // Aplication - klasa bazowa, kazdy program JavaFX musi ja miec
+import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene; // Scene - zawartosc okna
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage; // Stage - okno
-
+import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;

@@ -6,7 +6,6 @@ import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-
 import java.time.LocalDate;
 
 public class EmployeeButtonsFunctions {
