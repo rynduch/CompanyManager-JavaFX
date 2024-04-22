@@ -1,6 +1,6 @@
 ## CompanyManager-JavaFX
 
-The CompanyManager-JavaFX is UI application created to facilitate the management of employees and groups of employees within the company. The project allows you to create, delete, edit and track employee information.
+CompanyManager-JavaFX is UI application created to facilitate the management of employees and groups of employees within the company. The project allows you to create, delete, edit and track employee information.
 
 ## Requirements
 
