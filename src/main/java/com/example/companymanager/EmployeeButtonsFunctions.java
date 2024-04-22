@@ -1,4 +1,5 @@
 package com.example.companymanager;
+
 import javafx.geometry.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -9,7 +10,7 @@ import javafx.scene.control.*;
 import java.time.LocalDate;
 
 public class EmployeeButtonsFunctions {
-  public static void AddEmployeeToAll(ClassEmployee all){
+  public static void AddEmployeeToAll(ClassEmployee all) {
     Stage window = new Stage();
     window.initModality(Modality.APPLICATION_MODAL);
 
@@ -55,11 +56,11 @@ public class EmployeeButtonsFunctions {
     // BUTTON
     Button ok_button = new Button("OK");
     ok_button.setOnAction(e -> {
-      String s_name = name_textfield.getText();
-      String s_lastname = lastname_textfield.getText();
-      LocalDate ld_dob = dob_datepicker.getValue();
-      String s_salary = salary_textfield.getText();
-      EmployeeCondition ec_condition = condition_choicebox.getValue();
+              String s_name = name_textfield.getText();
+              String s_lastname = lastname_textfield.getText();
+              LocalDate ld_dob = dob_datepicker.getValue();
+              String s_salary = salary_textfield.getText();
+              EmployeeCondition ec_condition = condition_choicebox.getValue();
               if (s_name.trim().isEmpty() || s_lastname.trim().isEmpty() || ld_dob == null || s_salary.isEmpty() || ec_condition == null) {
                 invalid_data.setVisible(true);
                 invalid_data.setText("Please provide all required data.");
@@ -90,27 +91,29 @@ public class EmployeeButtonsFunctions {
     dob_layout.setSpacing(5);
 
     VBox center_layout = new VBox();
-    center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, name_layout,lastname_layout, dob_layout, salary_layout, condition_layout, invalid_data, ok_button);
+    center_layout.setPadding(new Insets(10, 10, 10, 10));
+    center_layout.getChildren().addAll(head_label, name_layout, lastname_layout, dob_layout, salary_layout, condition_layout, invalid_data, ok_button);
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 
     BorderPane add_employees_layout = new BorderPane();
-    add_employees_layout.setPadding(new Insets(10,10,10,10));
+    add_employees_layout.setPadding(new Insets(10, 10, 10, 10));
     add_employees_layout.setCenter(center_layout);
 
     Scene scene = new Scene(add_employees_layout);
     window.setScene(scene);
     window.showAndWait();
   }
-  public static void RemoveEmployee(Employee employee, ClassContainer class_container){
-    if ( employee != null) {
-      for(ClassEmployee gr: class_container.getObsClassEmployeeList()){
+
+  public static void RemoveEmployee(Employee employee, ClassContainer class_container) {
+    if (employee != null) {
+      for (ClassEmployee gr : class_container.getObsClassEmployeeList()) {
         gr.removeEmployee(employee);
       }
     }
   }
-  public static void ChangeEmployee(Employee employee, ClassContainer all){
+
+  public static void ChangeEmployee(Employee employee, ClassContainer all) {
     Stage window = new Stage();
     window.initModality(Modality.APPLICATION_MODAL);
 
@@ -155,10 +158,12 @@ public class EmployeeButtonsFunctions {
     // BUTTON
     Button ok_button = new Button("OK");
     ok_button.setOnAction(e -> {
-      if(name_textfield != null && !name_textfield.getText().isEmpty()) all.work_groups.get("All").changeName(employee, name_textfield.getText());
-      if(lastname_textfield != null && !lastname_textfield.getText().isEmpty()) all.work_groups.get("All").changeLastname(employee, lastname_textfield.getText());
-      if(dob_datepicker != null && dob_datepicker.getValue() != null)  all.work_groups.get("All").changeDob(employee, dob_datepicker.getValue());
-      if(salary_textfield != null && !salary_textfield.getText().isEmpty()) {
+      if (!name_textfield.getText().isEmpty())
+        all.work_groups.get("All").changeName(employee, name_textfield.getText());
+      if (!lastname_textfield.getText().isEmpty())
+        all.work_groups.get("All").changeLastname(employee, lastname_textfield.getText());
+      if (dob_datepicker.getValue() != null) all.work_groups.get("All").changeDob(employee, dob_datepicker.getValue());
+      if (!salary_textfield.getText().isEmpty()) {
         double d_salary;
         try {
           d_salary = Double.parseDouble(salary_textfield.getText());
@@ -169,7 +174,8 @@ public class EmployeeButtonsFunctions {
           invalid_data.setText("Salary must be a valid number.");
         }
       }
-      if(condition_choicebox.getValue() != null) all.work_groups.get("All").changeCondition(employee, condition_choicebox.getValue() );
+      if (condition_choicebox.getValue() != null)
+        all.work_groups.get("All").changeCondition(employee, condition_choicebox.getValue());
     });
 
     HBox name_layout = new HBox();
@@ -184,14 +190,14 @@ public class EmployeeButtonsFunctions {
     condition_layout.getChildren().addAll(l_condition, condition_choicebox);
     dob_layout.setSpacing(5);
 
-    VBox center_layout = new VBox(); // 10 - odleglosci miedzy children
-    center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, name_layout, lastname_layout, dob_layout, salary_layout, condition_layout,invalid_data, ok_button);
+    VBox center_layout = new VBox();
+    center_layout.setPadding(new Insets(10, 10, 10, 10));
+    center_layout.getChildren().addAll(head_label, name_layout, lastname_layout, dob_layout, salary_layout, condition_layout, invalid_data, ok_button);
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 
     BorderPane add_employees_layout = new BorderPane();
-    add_employees_layout.setPadding(new Insets(10,10,10,10));
+    add_employees_layout.setPadding(new Insets(10, 10, 10, 10));
     add_employees_layout.setCenter(center_layout);
 
     Scene scene = new Scene(add_employees_layout);

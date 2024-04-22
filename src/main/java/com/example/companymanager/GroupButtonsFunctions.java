@@ -13,7 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GroupButtonsFunctions {
-  public static void AddGroup(ClassContainer container){
+  public static void AddGroup(ClassContainer container) {
     Stage window = new Stage();
     window.initModality(Modality.APPLICATION_MODAL);
 
@@ -52,7 +52,7 @@ public class GroupButtonsFunctions {
       } else {
         try {
           int i_max = Integer.parseInt(s_max);
-          ClassEmployee clas_employee = new ClassEmployee(g_name,i_max);
+          ClassEmployee clas_employee = new ClassEmployee(g_name, i_max);
           container.addClass(clas_employee);
           window.close();
         } catch (NumberFormatException ex) {
@@ -68,8 +68,8 @@ public class GroupButtonsFunctions {
     max_layout.getChildren().addAll(l_max_number, max_textfield);
 
     VBox center_layout = new VBox();
-    center_layout.setPadding(new Insets(10,10,10,10));
-    center_layout.getChildren().addAll(head_label, group_name_layout,max_layout, invalid_data, ok_button );
+    center_layout.setPadding(new Insets(10, 10, 10, 10));
+    center_layout.getChildren().addAll(head_label, group_name_layout, max_layout, invalid_data, ok_button);
     center_layout.setAlignment(Pos.CENTER);
     center_layout.setSpacing(10);
 
@@ -78,7 +78,8 @@ public class GroupButtonsFunctions {
     window.showAndWait();
 
   }
-  public static void RemoveGroup(ClassEmployee class_employee, ClassContainer container){
+
+  public static void RemoveGroup(ClassEmployee class_employee, ClassContainer container) {
     container.work_groups.remove(class_employee.employee_group_name);
   }
 }
